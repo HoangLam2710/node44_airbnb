@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model comments {
+  cid       String    @id @db.VarChar(36)
+  content   String    @db.Text
+  rate      Int
+  create_at DateTime? @db.DateTime(0)
+  uid       String?   @db.VarChar(36)
+  rid       String?   @db.VarChar(36)
+  users     users?    @relation(fields: [uid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "comments_ibfk_1")
+  rooms     rooms?    @relation(fields: [rid], references: [rid], onDelete: Cascade, onUpdate: NoAction, map: "comments_ibfk_2")
+
+  @@index([rid], map: "rid")
+  @@index([uid], map: "uid")
+}
+
+model reservation {
+  reid        String   @id @db.VarChar(36)
+  checkin_at  DateTime @db.DateTime(0)
+  checkout_at DateTime @db.DateTime(0)
+  no_customer Int
+  uid         String?  @db.VarChar(36)
+  rid         String?  @db.VarChar(36)
+  users       users?   @relation(fields: [uid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "reservation_ibfk_1")
+  rooms       rooms?   @relation(fields: [rid], references: [rid], onDelete: Cascade, onUpdate: NoAction, map: "reservation_ibfk_2")
+
+  @@index([rid], map: "rid")
+  @@index([uid], map: "uid")
+}
+
+model room_position {
+  rpid    String  @id @db.VarChar(36)
+  name    String  @db.VarChar(255)
+  provice String  @db.VarChar(255)
+  country String  @db.VarChar(255)
+  image   String? @db.VarChar(255)
+  rooms   rooms[]
+}
+
+model rooms {
+  rid                String         @id @db.VarChar(36)
+  name               String         @db.VarChar(255)
+  no_customer        Int
+  no_bedroom         Int
+  no_bed             Int
+  no_bathroom        Int
+  price              Int
+  description        String?        @db.Text
+  is_washing_machine Boolean?       @default(false)
+  is_iron            Boolean?       @default(false)
+  is_television      Boolean?       @default(false)
+  is_air_conditioner Boolean?       @default(false)
+  is_wifi            Boolean?       @default(false)
+  is_kitchen         Boolean?       @default(false)
+  is_parking         Boolean?       @default(false)
+  is_pool            Boolean?       @default(false)
+  image              String?        @db.VarChar(255)
+  rpid               String?        @db.VarChar(36)
+  comments           comments[]
+  reservation        reservation[]
+  room_position      room_position? @relation(fields: [rpid], references: [rpid], onDelete: Cascade, onUpdate: NoAction, map: "rooms_ibfk_1")
+
+  @@index([rpid], map: "rpid")
+}
+
+model users {
+  uid           String        @id @db.VarChar(36)
+  name          String        @db.VarChar(50)
+  email         String        @db.VarChar(255)
+  password      String        @db.VarChar(255)
+  phone         String        @db.VarChar(20)
+  dob           DateTime?     @db.DateTime(0)
+  gender        String?       @db.VarChar(10)
+  role          String?       @db.VarChar(10)
+  refresh_token String?       @db.VarChar(255)
+  comments      comments[]
+  reservation   reservation[]
+}
