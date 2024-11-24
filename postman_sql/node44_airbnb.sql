@@ -26,7 +26,7 @@ CREATE TABLE users(
 
 -- pass is 123456
 INSERT INTO users (uid, name, email, password, phone, dob, gender, role) VALUES
-(UUID(), 'admin', 'admin@gmail.com', '$2b$10$RB8Ejy30k5RapOdweERkjuN5CMDG.6mdjFS72pPzxjs.7JIfXDhfu', '0123456789', '1996-10-27 00:00:00', 'Male', 1);
+(UUID(), 'admin', 'admin@gmail.com', '$2b$10$RB8Ejy30k5RapOdweERkjuN5CMDG.6mdjFS72pPzxjs.7JIfXDhfu', '0123456789', '1996-10-27 00:00:00', 'male', 1);
 
 CREATE TABLE room_position(
 	rpid VARCHAR(36) PRIMARY KEY,

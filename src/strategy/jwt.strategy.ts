@@ -1,43 +1,15 @@
 import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PassportStrategy } from '@nestjs/passport';
-import { PrismaClient } from '@prisma/client';
 import { Request, Response, NextFunction } from 'express';
-import { ExtractJwt, Strategy } from 'passport-jwt';
 import * as jwt from 'jsonwebtoken';
-
-@Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(configService: ConfigService) {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreElements: false,
-      secretOrKey: configService.get('JWT_SECRET'),
-    });
-  }
-
-  prisma = new PrismaClient();
-
-  async validate(tokenDecode: any) {
-    const userId = tokenDecode.data.userId;
-    const checkUser = await this.prisma.users.findFirst({
-      where: { uid: userId },
-    });
-
-    if (!checkUser) {
-      return false;
-    }
-    return tokenDecode;
-  }
-}
 
 @Injectable()
 export class JwtMiddleware implements NestMiddleware {
   constructor(private configService: ConfigService) {}
 
   use(req: Request, res: Response, next: NextFunction) {
-    const accessTokentoken = req.headers.authorization?.split(' ')[1];
-    if (!accessTokentoken) {
+    const accessToken = req.headers.authorization?.split(' ')[1];
+    if (!accessToken) {
       return res
         .status(HttpStatus.UNAUTHORIZED)
         .json({ message: 'No token provided' });
@@ -45,7 +17,7 @@ export class JwtMiddleware implements NestMiddleware {
 
     try {
       const decoded = jwt.verify(
-        accessTokentoken,
+        accessToken,
         this.configService.get('JWT_SECRET'),
       );
       req.body.uid = decoded['data']['uid'];

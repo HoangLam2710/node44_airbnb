@@ -1,16 +1,15 @@
-import { Controller, Post, Body, Res, HttpStatus, Req } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { RegisterDto } from 'src/admin/auth/dto/register.dto';
-import { LoginDto } from 'src/admin/auth/dto/login.dto';
+import { RegisterDto } from 'src/user/auth/dto/register.dto';
+import { LoginDto } from 'src/user/auth/dto/login.dto';
 
-@ApiTags('Admin Auth')
-@Controller('admin/auth')
+@ApiTags('User Auth')
+@Controller('user/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiBearerAuth()
   @Post('/register')
   @ApiBody({ type: RegisterDto })
   async register(@Body() body: RegisterDto, @Res() res: Response) {

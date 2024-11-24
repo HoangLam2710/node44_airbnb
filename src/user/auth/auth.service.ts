@@ -2,10 +2,10 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 import { plainToClass } from 'class-transformer';
-import { hashSync, compareSync } from 'bcrypt';
-import { ResponseAuthDto } from './dto/auth.dto';
-import { RegisterDto } from 'src/admin/auth/dto/register.dto';
-import { LoginDto } from 'src/admin/auth/dto/login.dto';
+import { compareSync, hashSync } from 'bcrypt';
+import { ResponseAuthDto } from 'src/user/auth/dto/auth.dto';
+import { RegisterDto } from 'src/user/auth/dto/register.dto';
+import { LoginDto } from 'src/user/auth/dto/login.dto';
 import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
@@ -34,7 +34,7 @@ export class AuthService {
           phone,
           dob: new Date(dob),
           gender,
-          role: 2,
+          role: 3,
         },
       });
 
