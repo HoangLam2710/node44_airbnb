@@ -6,13 +6,13 @@ import { hashSync, compareSync } from 'bcrypt';
 import { ResponseAuthDto } from './dto/auth.dto';
 import { RegisterDto } from 'src/admin/auth/dto/register.dto';
 import { LoginDto } from 'src/admin/auth/dto/login.dto';
-import { UtilsService } from 'src/utils/utils.service';
+import { TokenService } from 'src/token/token.service';
 
 @Injectable()
 export class AuthService {
   prisma = new PrismaClient();
 
-  constructor(private utilsService: UtilsService) {}
+  constructor(private tokenService: TokenService) {}
 
   async register(body: RegisterDto): Promise<ResponseAuthDto> {
     try {
@@ -66,8 +66,8 @@ export class AuthService {
         throw new BadRequestException('Invalid password');
       }
 
-      const accessToken = this.utilsService.createAccessToken(checkUser.uid);
-      const refreshToken = this.utilsService.createRefreshToken(checkUser.uid);
+      const accessToken = this.tokenService.createAccessToken(checkUser.uid);
+      const refreshToken = this.tokenService.createRefreshToken(checkUser.uid);
 
       await this.prisma.users.update({
         where: { uid: checkUser.uid },
@@ -92,7 +92,7 @@ export class AuthService {
     const user = await this.prisma.users.findUnique({
       where: { uid },
     });
-    const accessToken = this.utilsService.createAccessToken(user.uid);
+    const accessToken = this.tokenService.createAccessToken(user.uid);
 
     return {
       user: plainToClass(ResponseAuthDto, user),

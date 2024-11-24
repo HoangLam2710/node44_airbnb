@@ -1,11 +1,11 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UtilsModule } from 'src/utils/utils.module';
+import { TokenModule } from 'src/token/token.module';
 import { JwtMiddlewareRefreshToken } from 'src/strategy/jwt.strategy';
 
 @Module({
-  imports: [UtilsModule],
+  imports: [TokenModule],
   controllers: [AuthController],
   providers: [AuthService],
 })

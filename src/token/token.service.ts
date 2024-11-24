@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class UtilsService {
+export class TokenService {
   constructor(
     private jwtService: JwtService,
     private configService: ConfigService,
