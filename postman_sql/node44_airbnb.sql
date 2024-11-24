@@ -26,14 +26,14 @@ CREATE TABLE users(
 
 -- pass is 123456
 INSERT INTO users (uid, name, email, password, phone, dob, gender, role) VALUES
-(UUID(), 'admin', 'admin@gmail.com', '$2b$10$RB8Ejy30k5RapOdweERkjuN5CMDG.6mdjFS72pPzxjs.7JIfXDhfu', '0123456789', '1996-10-27 00:00:00', 'male', 1);
+(UUID(), 'admin', 'admin@gmail.com', '$2b$10$RB8Ejy30k5RapOdweERkjuN5CMDG.6mdjFS72pPzxjs.7JIfXDhfu', '0123456789', '2024-01-01 00:00:00', 'male', 1);
 
-CREATE TABLE room_position(
-	rpid VARCHAR(36) PRIMARY KEY,
+CREATE TABLE positions(
+	pid VARCHAR(36) PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
 	provice VARCHAR(255) NOT NULL,
 	country VARCHAR(255) NOT NULL,
-	image VARCHAR(255)
+	images TEXT
 );
 
 CREATE TABLE rooms(
@@ -53,9 +53,9 @@ CREATE TABLE rooms(
 	is_kitchen BOOLEAN DEFAULT FALSE,
 	is_parking BOOLEAN DEFAULT FALSE,
 	is_pool BOOLEAN DEFAULT FALSE,
-	image VARCHAR(255),
-	rpid VARCHAR(36),
-	FOREIGN KEY(rpid) REFERENCES room_position(rpid) ON DELETE CASCADE
+	images TEXT,
+	pid VARCHAR(36),
+	FOREIGN KEY(pid) REFERENCES positions(pid) ON DELETE CASCADE
 );
 
 
@@ -83,6 +83,6 @@ CREATE TABLE comments(
 
 DROP TABLE comments
 DROP TABLE reservation
-DROP TABLE room_position
 DROP TABLE rooms
+DROP TABLE positions
 DROP TABLE users

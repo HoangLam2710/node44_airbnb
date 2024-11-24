@@ -35,39 +35,30 @@ model reservation {
   @@index([uid], map: "uid")
 }
 
-model room_position {
-  rpid    String  @id @db.VarChar(36)
-  name    String  @db.VarChar(255)
-  provice String  @db.VarChar(255)
-  country String  @db.VarChar(255)
-  image   String? @db.VarChar(255)
-  rooms   rooms[]
-}
-
 model rooms {
-  rid                String         @id @db.VarChar(36)
-  name               String         @db.VarChar(255)
+  rid                String        @id @db.VarChar(36)
+  name               String        @db.VarChar(255)
   no_customer        Int
   no_bedroom         Int
   no_bed             Int
   no_bathroom        Int
   price              Int
-  description        String?        @db.Text
-  is_washing_machine Boolean?       @default(false)
-  is_iron            Boolean?       @default(false)
-  is_television      Boolean?       @default(false)
-  is_air_conditioner Boolean?       @default(false)
-  is_wifi            Boolean?       @default(false)
-  is_kitchen         Boolean?       @default(false)
-  is_parking         Boolean?       @default(false)
-  is_pool            Boolean?       @default(false)
-  image              String?        @db.VarChar(255)
-  rpid               String?        @db.VarChar(36)
+  description        String?       @db.Text
+  is_washing_machine Boolean?      @default(false)
+  is_iron            Boolean?      @default(false)
+  is_television      Boolean?      @default(false)
+  is_air_conditioner Boolean?      @default(false)
+  is_wifi            Boolean?      @default(false)
+  is_kitchen         Boolean?      @default(false)
+  is_parking         Boolean?      @default(false)
+  is_pool            Boolean?      @default(false)
+  images             String?       @db.Text
+  pid                String?       @db.VarChar(36)
   comments           comments[]
   reservation        reservation[]
-  room_position      room_position? @relation(fields: [rpid], references: [rpid], onDelete: Cascade, onUpdate: NoAction, map: "rooms_ibfk_1")
+  positions          positions?    @relation(fields: [pid], references: [pid], onDelete: Cascade, onUpdate: NoAction, map: "rooms_ibfk_1")
 
-  @@index([rpid], map: "rpid")
+  @@index([pid], map: "pid")
 }
 
 model users {
@@ -91,4 +82,13 @@ model roles {
   roid  Int     @id @default(autoincrement())
   name  String? @db.VarChar(20)
   users users[]
+}
+
+model positions {
+  pid     String  @id @db.VarChar(36)
+  name    String  @db.VarChar(255)
+  provice String  @db.VarChar(255)
+  country String  @db.VarChar(255)
+  images  String? @db.Text
+  rooms   rooms[]
 }
