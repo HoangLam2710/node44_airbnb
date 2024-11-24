@@ -57,6 +57,9 @@ export class AuthService {
       if (!checkUser) {
         throw new BadRequestException('User not found');
       }
+      if (checkUser.role === 3) {
+        throw new BadRequestException('Do not have permission');
+      }
 
       const isMatch = compareSync(password, checkUser.password);
       if (!isMatch) {
