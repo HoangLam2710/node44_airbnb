@@ -12,6 +12,10 @@ export class AdminUserModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(JwtMiddleware, AdminPermissionMiddleware)
+      .forRoutes({ path: 'admin/user', method: RequestMethod.ALL });
+
+    consumer
+      .apply(JwtMiddleware, AdminPermissionMiddleware)
       .forRoutes({ path: 'admin/user/*', method: RequestMethod.ALL });
   }
 }
