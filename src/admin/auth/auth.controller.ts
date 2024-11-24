@@ -1,18 +1,33 @@
-import { Controller, Post, Body, Res, HttpStatus, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Res,
+  HttpStatus,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { RegisterDto } from 'src/auth/dto/register.dto';
-import { LoginDto } from 'src/auth/dto/login.dto';
+import { RegisterDto } from 'src/admin/auth/dto/register.dto';
+import { LoginDto } from 'src/admin/auth/dto/login.dto';
+import { AuthGuard } from '@nestjs/passport';
 
-@ApiTags('Auth')
-@Controller('auth')
+@ApiTags('Admin Auth')
+@Controller('admin/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
   @Post('/register')
   @ApiBody({ type: RegisterDto })
-  async register(@Body() body: RegisterDto, @Res() res: Response) {
+  async register(
+    @Body() body: RegisterDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
     try {
       const result = await this.authService.register(body);
 
@@ -54,9 +69,9 @@ export class AuthController {
   @Post('/extend-token')
   async extendToken(@Req() req: Request, @Res() res: Response) {
     try {
-      const refreshToken = req.headers.cookie.split('=')[1];
+      const uid = req.body.uid;
 
-      const result = await this.authService.extendToken(refreshToken);
+      const result = await this.authService.extendToken(uid);
 
       return res.status(HttpStatus.OK).json({
         message: 'Token extended',

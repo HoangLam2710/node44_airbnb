@@ -1,6 +1,16 @@
 CREATE DATABASE node44_airbnb;
 USE node44_airbnb;
 
+CREATE TABLE roles(
+	roid INT PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(20)
+)
+
+INSERT INTO roles (name) VALUES
+('super-admin'),
+('admin'),
+('user');
+
 CREATE TABLE users(
 	uid VARCHAR(36) PRIMARY KEY,
 	name VARCHAR(50) NOT NULL,
@@ -9,8 +19,21 @@ CREATE TABLE users(
 	phone VARCHAR(20) NOT NULL,
 	dob DATETIME,
 	gender VARCHAR(10),
-	role VARCHAR(10),
-	refresh_token VARCHAR(255)
+	role INT DEFAULT 3,
+	refresh_token VARCHAR(255),
+	FOREIGN KEY(role) REFERENCES roles(roid) ON DELETE CASCADE
+);
+
+-- pass is 123456
+INSERT INTO users (uid, name, email, password, phone, dob, gender, role) VALUES
+(UUID(), 'admin', 'admin@gmail.com', '$2b$10$RB8Ejy30k5RapOdweERkjuN5CMDG.6mdjFS72pPzxjs.7JIfXDhfu', '0123456789', '1996-10-27 00:00:00', 'Male', 1);
+
+CREATE TABLE room_position(
+	rpid VARCHAR(36) PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	provice VARCHAR(255) NOT NULL,
+	country VARCHAR(255) NOT NULL,
+	image VARCHAR(255)
 );
 
 CREATE TABLE rooms(
@@ -35,13 +58,6 @@ CREATE TABLE rooms(
 	FOREIGN KEY(rpid) REFERENCES room_position(rpid) ON DELETE CASCADE
 );
 
-CREATE TABLE room_position(
-	rpid VARCHAR(36) PRIMARY KEY,
-	name VARCHAR(255) NOT NULL,
-	provice VARCHAR(255) NOT NULL,
-	country VARCHAR(255) NOT NULL,
-	image VARCHAR(255)
-);
 
 CREATE TABLE reservation(
 	reid VARCHAR(36) PRIMARY KEY,
@@ -65,4 +81,8 @@ CREATE TABLE comments(
 	FOREIGN KEY(rid) REFERENCES rooms(rid) ON DELETE CASCADE
 );
 
-
+DROP TABLE comments
+DROP TABLE reservation
+DROP TABLE room_position
+DROP TABLE rooms
+DROP TABLE users

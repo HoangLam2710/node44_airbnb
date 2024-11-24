@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -10,8 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { plainToClass } from 'class-transformer';
 import { hashSync, compareSync } from 'bcrypt';
 import { ResponseAuthDto } from './dto/auth.dto';
-import { RegisterDto } from 'src/auth/dto/register.dto';
-import { LoginDto } from 'src/auth/dto/login.dto';
+import { RegisterDto } from 'src/admin/auth/dto/register.dto';
+import { LoginDto } from 'src/admin/auth/dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -50,7 +46,15 @@ export class AuthService {
 
   async register(body: RegisterDto): Promise<ResponseAuthDto> {
     try {
-      const { name, email, password, phone, dob, gender, role } = body;
+      const { uid, name, email, password, phone, dob, gender } = body;
+
+      const checkAdmin = await this.prisma.users.findUnique({
+        where: { uid },
+      });
+      if (checkAdmin && checkAdmin.role !== 1) {
+        throw new BadRequestException('Do not have permission');
+      }
+
       const checkUser = await this.prisma.users.findFirst({
         where: { email },
       });
@@ -67,7 +71,7 @@ export class AuthService {
           phone,
           dob: new Date(dob),
           gender,
-          role,
+          role: 2,
         },
       });
 
@@ -117,24 +121,8 @@ export class AuthService {
   }
 
   async extendToken(
-    refreshToken: string,
+    uid: string,
   ): Promise<{ user: ResponseAuthDto; accessToken: string }> {
-    if (!refreshToken) {
-      throw new UnauthorizedException('Token not found');
-    }
-
-    try {
-      this.jwtService.verify(refreshToken, {
-        secret: this.configService.get('JWT_REFRESH_SECRET'),
-      });
-    } catch (_) {
-      throw new UnauthorizedException('Invalid token');
-    }
-
-    const {
-      data: { uid },
-    } = this.jwtService.decode(refreshToken);
-
     const user = await this.prisma.users.findFirst({
       where: { uid },
     });

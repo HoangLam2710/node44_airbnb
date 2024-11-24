@@ -78,8 +78,17 @@ model users {
   phone         String        @db.VarChar(20)
   dob           DateTime?     @db.DateTime(0)
   gender        String?       @db.VarChar(10)
-  role          String?       @db.VarChar(10)
+  role          Int?          @default(2)
   refresh_token String?       @db.VarChar(255)
   comments      comments[]
   reservation   reservation[]
+  roles         roles?        @relation(fields: [role], references: [roid], onDelete: Cascade, onUpdate: NoAction, map: "users_ibfk_1")
+
+  @@index([role], map: "roid")
+}
+
+model roles {
+  roid  Int     @id @default(autoincrement())
+  name  String? @db.VarChar(20)
+  users users[]
 }

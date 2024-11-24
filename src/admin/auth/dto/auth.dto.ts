@@ -20,7 +20,7 @@ export class ResponseAuthDto {
   gender: string;
 
   @Expose()
-  role: string;
+  role: number;
 
   @Exclude()
   refresh_token: string;
