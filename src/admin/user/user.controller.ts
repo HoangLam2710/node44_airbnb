@@ -4,10 +4,11 @@ import {
   Get,
   HttpStatus,
   Param,
+  Query,
   Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
 @ApiTags('Admin User')
@@ -17,13 +18,36 @@ export class UserController {
 
   @ApiBearerAuth()
   @Get('/')
-  async findAll(@Res() res: Response) {
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'size', required: false, type: Number })
+  @ApiQuery({ name: 'keyword', required: false, type: String })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get all videos successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal server error',
+  })
+  async findAll(
+    @Query('page') page: number,
+    @Query('size') size: number,
+    @Query('keyword') keyword: string,
+    @Res() res: Response,
+  ) {
     try {
-      const users = await this.userService.findAll();
+      const formatPage = page ? Number(page) : 1;
+      const formatSize = size ? Number(size) : 10;
+
+      const result = await this.userService.findAll(
+        formatPage,
+        formatSize,
+        keyword,
+      );
 
       return res.status(HttpStatus.OK).json({
         message: 'Get all users successfully',
-        data: users,
+        data: result,
       });
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
@@ -34,6 +58,14 @@ export class UserController {
 
   @ApiBearerAuth()
   @Delete('/:uid')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Remove successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal server error',
+  })
   async remove(@Param('uid') uid: string, @Res() res: Response) {
     try {
       await this.userService.remove(uid);
