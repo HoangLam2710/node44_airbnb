@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Res, HttpStatus, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { RegisterDto } from 'src/admin/auth/dto/register.dto';
 import { LoginDto } from 'src/admin/auth/dto/login.dto';
@@ -13,6 +13,14 @@ export class AuthController {
   @ApiBearerAuth()
   @Post('/register')
   @ApiBody({ type: RegisterDto })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Register successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal server error',
+  })
   async register(@Body() body: RegisterDto, @Res() res: Response) {
     try {
       const result = await this.authService.register(body);
@@ -30,6 +38,14 @@ export class AuthController {
 
   @Post('/login')
   @ApiBody({ type: LoginDto })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Login successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal server error',
+  })
   async login(@Body() body: LoginDto, @Res() res: Response) {
     try {
       const result = await this.authService.login(body);
@@ -53,6 +69,14 @@ export class AuthController {
   }
 
   @Post('/extend-token')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Token extended',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal server error',
+  })
   async extendToken(@Req() req: Request, @Res() res: Response) {
     try {
       const uid = req.body.uid;
