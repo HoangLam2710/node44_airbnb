@@ -23,11 +23,7 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @Post('/register')
   @ApiBody({ type: RegisterDto })
-  async register(
-    @Body() body: RegisterDto,
-    @Req() req: Request,
-    @Res() res: Response,
-  ) {
+  async register(@Body() body: RegisterDto, @Res() res: Response) {
     try {
       const result = await this.authService.register(body);
 

@@ -7,6 +7,31 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import * as jwt from 'jsonwebtoken';
 
 @Injectable()
+export class JwtStrategy extends PassportStrategy(Strategy) {
+  constructor(configService: ConfigService) {
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreElements: false,
+      secretOrKey: configService.get('JWT_SECRET'),
+    });
+  }
+
+  prisma = new PrismaClient();
+
+  async validate(tokenDecode: any) {
+    const userId = tokenDecode.data.userId;
+    const checkUser = await this.prisma.users.findFirst({
+      where: { uid: userId },
+    });
+
+    if (!checkUser) {
+      return false;
+    }
+    return tokenDecode;
+  }
+}
+
+@Injectable()
 export class JwtMiddleware implements NestMiddleware {
   constructor(private configService: ConfigService) {}
 
@@ -58,30 +83,5 @@ export class JwtMiddlewareRefreshToken implements NestMiddleware {
         .status(HttpStatus.UNAUTHORIZED)
         .json({ message: 'Invalid token' });
     }
-  }
-}
-
-@Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(configService: ConfigService) {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreElements: false,
-      secretOrKey: configService.get('JWT_SECRET'),
-    });
-  }
-
-  prisma = new PrismaClient();
-
-  async validate(tokenDecode: any) {
-    const userId = tokenDecode.data.userId;
-    const checkUser = await this.prisma.users.findFirst({
-      where: { uid: userId },
-    });
-
-    if (!checkUser) {
-      return false;
-    }
-    return tokenDecode;
   }
 }
