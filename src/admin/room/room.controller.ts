@@ -137,7 +137,7 @@ export class RoomController {
   @Get('/find-room-by-position/:pid')
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Get room by pid successfully',
+    description: 'Get room by position successfully',
   })
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -148,7 +148,7 @@ export class RoomController {
       const result = await this.roomService.findRoomByPid(pid);
 
       return res.status(HttpStatus.OK).json({
-        message: 'Get room by pid successfully',
+        message: 'Get room by position successfully',
         data: result,
       });
     } catch (error) {
