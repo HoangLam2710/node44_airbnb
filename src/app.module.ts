@@ -7,6 +7,7 @@ import { AdminPositionModule } from './admin/position/position.module';
 // user
 import { UserAuthModule } from './user/auth/auth.module';
 import { UserModule } from './user/user/user.module';
+import { UserPositionModule } from './user/position/position.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UserModule } from './user/user/user.module';
     AdminPositionModule,
     UserAuthModule,
     UserModule,
+    UserPositionModule,
   ],
 })
 export class AppModule {}
