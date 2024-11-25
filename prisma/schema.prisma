@@ -37,6 +37,7 @@ model reservation {
 
 model rooms {
   rid                String        @id @db.VarChar(36)
+  pid                String        @db.VarChar(36)
   name               String        @db.VarChar(255)
   no_customer        Int
   no_bedroom         Int
@@ -53,10 +54,10 @@ model rooms {
   is_parking         Boolean?      @default(false)
   is_pool            Boolean?      @default(false)
   images             String?       @db.Text
-  pid                String?       @db.VarChar(36)
+  status             String?       @default("active") @db.VarChar(10)
   comments           comments[]
   reservation        reservation[]
-  positions          positions?    @relation(fields: [pid], references: [pid], onDelete: Cascade, onUpdate: NoAction, map: "rooms_ibfk_1")
+  positions          positions     @relation(fields: [pid], references: [pid], onDelete: Cascade, onUpdate: NoAction, map: "rooms_ibfk_1")
 
   @@index([pid], map: "pid")
 }

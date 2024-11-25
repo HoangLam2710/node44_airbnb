@@ -39,6 +39,8 @@ CREATE TABLE positions(
 
 CREATE TABLE rooms(
 	rid VARCHAR(36) PRIMARY KEY,
+	pid VARCHAR(36) NOT NULL,
+	FOREIGN KEY(pid) REFERENCES positions(pid) ON DELETE CASCADE,
 	name VARCHAR(255) NOT NULL,
 	no_customer INT NOT NULL,
 	no_bedroom INT NOT NULL,
@@ -55,10 +57,8 @@ CREATE TABLE rooms(
 	is_parking BOOLEAN DEFAULT FALSE,
 	is_pool BOOLEAN DEFAULT FALSE,
 	images TEXT,
-	pid VARCHAR(36),
-	FOREIGN KEY(pid) REFERENCES positions(pid) ON DELETE CASCADE
+	status VARCHAR(10) DEFAULT 'active'
 );
-
 
 CREATE TABLE reservation(
 	reid VARCHAR(36) PRIMARY KEY,
