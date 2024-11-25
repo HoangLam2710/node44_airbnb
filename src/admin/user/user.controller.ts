@@ -60,7 +60,7 @@ export class UserController {
   @Delete('/:uid')
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Remove successfully',
+    description: 'Remove user successfully',
   })
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -71,7 +71,7 @@ export class UserController {
       await this.userService.remove(uid);
 
       return res.status(HttpStatus.OK).json({
-        message: 'Remove successfully',
+        message: 'Remove user successfully',
       });
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
