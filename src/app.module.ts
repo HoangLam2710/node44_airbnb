@@ -9,6 +9,7 @@ import { AdminRoomModule } from './admin/room/room.module';
 import { UserAuthModule } from './user/auth/auth.module';
 import { UserModule } from './user/user/user.module';
 import { UserPositionModule } from './user/position/position.module';
+import { UserRoomModule } from './user/room/room.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UserPositionModule } from './user/position/position.module';
     UserAuthModule,
     UserModule,
     UserPositionModule,
+    UserRoomModule,
   ],
 })
 export class AppModule {}
