@@ -57,7 +57,7 @@ export class PositionController {
     try {
       const images = await this.cloudUploadService.uploadImage(
         files,
-        'position',
+        'positions',
       );
       return res.status(HttpStatus.OK).json({
         message: 'Upload successfully',

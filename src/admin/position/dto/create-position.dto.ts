@@ -2,7 +2,7 @@ import { IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePositionDto {
-  @IsNotEmpty({ message: 'User name is required' })
+  @IsNotEmpty({ message: 'Position name is required' })
   @ApiProperty()
   name: string;
 
