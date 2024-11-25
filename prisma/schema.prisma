@@ -90,5 +90,6 @@ model positions {
   provice String  @db.VarChar(255)
   country String  @db.VarChar(255)
   images  String? @db.Text
+  status  String? @default("active") @db.VarChar(10)
   rooms   rooms[]
 }

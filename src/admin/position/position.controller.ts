@@ -1,9 +1,13 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
+  Param,
   Post,
+  Put,
+  Query,
   Res,
   UploadedFiles,
   UseInterceptors,
@@ -13,6 +17,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiConsumes,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -50,13 +55,13 @@ export class PositionController {
     @Res() res: Response,
   ) {
     try {
-      const result = await this.cloudUploadService.uploadImage(
+      const images = await this.cloudUploadService.uploadImage(
         files,
         'position',
       );
       return res.status(HttpStatus.OK).json({
         message: 'Upload successfully',
-        data: result,
+        data: { images },
       });
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
@@ -70,7 +75,7 @@ export class PositionController {
   @ApiBody({ type: CreatePositionDto })
   @ApiResponse({
     status: HttpStatus.CREATED,
-    description: 'Create room position successfully',
+    description: 'Create position successfully',
   })
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -78,11 +83,130 @@ export class PositionController {
   })
   async create(@Body() body: CreatePositionDto, @Res() res: Response) {
     try {
-      const result = await this.positionService.create(body);
+      const position = await this.positionService.create(body);
+
+      return res.status(HttpStatus.CREATED).json({
+        message: 'Create position successfully',
+        data: { position },
+      });
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: error.message,
+      });
+    }
+  }
+
+  @ApiBearerAuth()
+  @Get('/')
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'size', required: false, type: Number })
+  @ApiQuery({ name: 'keyword', required: false, type: String })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get all position successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal server error',
+  })
+  async findAll(
+    @Query('page') page: number,
+    @Query('size') size: number,
+    @Query('keyword') keyword: string,
+    @Res() res: Response,
+  ) {
+    try {
+      const formatPage = page ? Number(page) : 1;
+      const formatSize = size ? Number(size) : 10;
+
+      const result = await this.positionService.findAll(
+        formatPage,
+        formatSize,
+        keyword,
+      );
 
       return res.status(HttpStatus.OK).json({
-        message: 'Create room position successfully',
+        message: 'Get all position successfully',
         data: result,
+      });
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: error.message,
+      });
+    }
+  }
+
+  @ApiBearerAuth()
+  @Get('/:pid')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get position detail successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal server error',
+  })
+  async findOne(@Param('pid') pid: string, @Res() res: Response) {
+    try {
+      const position = await this.positionService.findOne(pid);
+
+      return res.status(HttpStatus.OK).json({
+        message: 'Get position detail successfully',
+        data: { position },
+      });
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: error.message,
+      });
+    }
+  }
+
+  @ApiBearerAuth()
+  @Put('/:pid')
+  @ApiBody({ type: CreatePositionDto })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Update position successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal server error',
+  })
+  async update(
+    @Param('pid') pid: string,
+    @Body() body: CreatePositionDto,
+    @Res() res: Response,
+  ) {
+    try {
+      const position = await this.positionService.update(pid, body);
+
+      return res.status(HttpStatus.OK).json({
+        message: 'Update position successfully',
+        data: { position },
+      });
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        message: error.message,
+      });
+    }
+  }
+
+  @ApiBearerAuth()
+  @Delete('/:pid')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Remove position successfully',
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Internal server error',
+  })
+  async remove(@Param('pid') pid: string, @Res() res: Response) {
+    try {
+      await this.positionService.remove(pid);
+
+      return res.status(HttpStatus.OK).json({
+        message: 'Remove position successfully',
       });
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
