@@ -25,7 +25,7 @@ export class AuthService {
         throw new BadRequestException('User already exists');
       }
 
-      const userNew = await this.prisma.users.create({
+      const newUser = await this.prisma.users.create({
         data: {
           uid: uuidv4(),
           name,
@@ -38,7 +38,7 @@ export class AuthService {
         },
       });
 
-      return plainToClass(ResponseAuthDto, userNew);
+      return plainToClass(ResponseAuthDto, newUser);
     } catch (error) {
       throw new Error(error);
     }

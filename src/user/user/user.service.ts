@@ -33,7 +33,7 @@ export class UserService {
       }
 
       const { name, phone, dob, gender } = body;
-      const userNew = await this.prisma.users.update({
+      const newUser = await this.prisma.users.update({
         where: { uid },
         data: {
           name,
@@ -43,7 +43,7 @@ export class UserService {
         },
       });
 
-      return plainToClass(ResponseUserDto, userNew);
+      return plainToClass(ResponseUserDto, newUser);
     } catch (error) {
       throw new Error(error);
     }

@@ -13,7 +13,7 @@ export class PositionService {
   async create(body: CreatePositionDto): Promise<ResponsePositionDto> {
     try {
       const { name, provice, country, images } = body;
-      const positionNew = await this.prisma.positions.create({
+      const newPosition = await this.prisma.positions.create({
         data: {
           pid: uuidv4(),
           name,
@@ -22,7 +22,7 @@ export class PositionService {
           images: images ? JSON.stringify(images) : null,
         },
       });
-      return plainToClass(ResponsePositionDto, positionNew);
+      return plainToClass(ResponsePositionDto, newPosition);
     } catch (error) {
       throw new Error(error);
     }
@@ -84,7 +84,7 @@ export class PositionService {
       }
 
       const { name, provice, country, images } = body;
-      const positionUpdate = await this.prisma.positions.update({
+      const updatePosition = await this.prisma.positions.update({
         where: { pid },
         data: {
           name,
@@ -93,7 +93,7 @@ export class PositionService {
           images: images ? JSON.stringify(images) : null,
         },
       });
-      return plainToClass(ResponsePositionDto, positionUpdate);
+      return plainToClass(ResponsePositionDto, updatePosition);
     } catch (error) {
       throw new Error(error);
     }
