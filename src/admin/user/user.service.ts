@@ -19,7 +19,7 @@ export class UserService {
         where: keyword ? { name: { contains: keyword }, role: 3 } : { role: 3 },
       });
       const countUser = await this.prisma.users.count({
-        where: { role: 3 },
+        where: keyword ? { name: { contains: keyword }, role: 3 } : { role: 3 },
       });
       const usersResponse = users.map((user) =>
         plainToClass(ResponseUserDto, user),

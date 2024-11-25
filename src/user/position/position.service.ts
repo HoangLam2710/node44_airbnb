@@ -22,7 +22,9 @@ export class PositionService {
           : { status: 'active' },
       });
       const countPosition = await this.prisma.positions.count({
-        where: { status: 'active' },
+        where: keyword
+          ? { name: { contains: keyword }, status: 'active' }
+          : { status: 'active' },
       });
       const positionsResponse = positions.map((user) =>
         plainToClass(ResponsePositionDto, user),
