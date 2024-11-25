@@ -22,11 +22,11 @@ export class AuthController {
   })
   async register(@Body() body: RegisterDto, @Res() res: Response) {
     try {
-      const result = await this.authService.register(body);
+      const user = await this.authService.register(body);
 
       return res.status(HttpStatus.CREATED).json({
         message: 'Register successfully',
-        data: result,
+        data: { user },
       });
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({

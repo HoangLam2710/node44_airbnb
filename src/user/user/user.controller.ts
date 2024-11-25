@@ -34,7 +34,7 @@ export class UserController {
 
       return res.status(HttpStatus.OK).json({
         message: 'Get user detail successfully',
-        data: user,
+        data: { user },
       });
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
@@ -65,7 +65,7 @@ export class UserController {
 
       return res.status(HttpStatus.OK).json({
         message: 'Update user successfully',
-        data: user,
+        data: { user },
       });
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
