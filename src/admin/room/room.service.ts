@@ -31,6 +31,14 @@ export class RoomService {
         isPool,
         images,
       } = body;
+
+      const checkPosition = await this.prisma.positions.findUnique({
+        where: { pid, status: 'active' },
+      });
+      if (!checkPosition) {
+        throw new BadRequestException('Position not found');
+      }
+
       const newRoom = await this.prisma.rooms.create({
         data: {
           rid: uuidv4(),
