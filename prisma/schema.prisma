@@ -26,10 +26,10 @@ model reservation {
   checkin_at  DateTime @db.DateTime(0)
   checkout_at DateTime @db.DateTime(0)
   no_customer Int
-  uid         String?  @db.VarChar(36)
-  rid         String?  @db.VarChar(36)
-  users       users?   @relation(fields: [uid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "reservation_ibfk_1")
-  rooms       rooms?   @relation(fields: [rid], references: [rid], onDelete: Cascade, onUpdate: NoAction, map: "reservation_ibfk_2")
+  uid         String   @db.VarChar(36)
+  rid         String   @db.VarChar(36)
+  users       users    @relation(fields: [uid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "reservation_ibfk_1")
+  rooms       rooms    @relation(fields: [rid], references: [rid], onDelete: Cascade, onUpdate: NoAction, map: "reservation_ibfk_2")
 
   @@index([rid], map: "rid")
   @@index([uid], map: "uid")
