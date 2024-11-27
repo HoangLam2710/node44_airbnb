@@ -8,14 +8,14 @@ datasource db {
 }
 
 model comments {
-  cid       String    @id @db.VarChar(36)
-  content   String    @db.Text
+  cid       String   @id @db.VarChar(36)
+  content   String   @db.Text
   rate      Int
-  create_at DateTime? @db.DateTime(0)
-  uid       String?   @db.VarChar(36)
-  rid       String?   @db.VarChar(36)
-  users     users?    @relation(fields: [uid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "comments_ibfk_1")
-  rooms     rooms?    @relation(fields: [rid], references: [rid], onDelete: Cascade, onUpdate: NoAction, map: "comments_ibfk_2")
+  create_at DateTime @db.DateTime(0)
+  uid       String   @db.VarChar(36)
+  rid       String   @db.VarChar(36)
+  users     users    @relation(fields: [uid], references: [uid], onDelete: Cascade, onUpdate: NoAction, map: "comments_ibfk_1")
+  rooms     rooms    @relation(fields: [rid], references: [rid], onDelete: Cascade, onUpdate: NoAction, map: "comments_ibfk_2")
 
   @@index([rid], map: "rid")
   @@index([uid], map: "uid")
