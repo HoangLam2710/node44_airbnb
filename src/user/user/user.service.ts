@@ -31,14 +31,13 @@ export class UserService {
       if (!checkUser) {
         throw new BadRequestException('User not found');
       }
-
       const { name, phone, dob, gender } = body;
       const newUser = await this.prisma.users.update({
         where: { uid },
         data: {
           name,
           phone,
-          dob,
+          dob: new Date(dob.toString().split('T')[0]),
           gender,
         },
       });
