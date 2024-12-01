@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, Max, Min } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateCommentDto {
@@ -13,6 +13,8 @@ export class CreateCommentDto {
   content: string;
 
   @IsNotEmpty({ message: 'Rate is required' })
+  @Min(0, { message: 'Rate must be greater than or equal to 0' })
+  @Max(5, { message: 'Rate must be less than or equal to 5' })
   @ApiProperty()
   rate: number;
 }

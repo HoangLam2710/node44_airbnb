@@ -7,10 +7,17 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Res,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateCommentDto } from 'src/user/comment/dto/create-comment.dto';
 import { Response } from 'express';
 import { UpdateCommentDto } from 'src/user/comment/dto/update-comment.dto';
@@ -48,6 +55,8 @@ export class CommentController {
 
   @ApiBearerAuth()
   @Get('/:rid')
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'size', required: false, type: Number })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Get all comment successfully',
@@ -56,12 +65,24 @@ export class CommentController {
     status: HttpStatus.INTERNAL_SERVER_ERROR,
     description: 'Internal server error',
   })
-  async findAllByRoom(@Param('rid') rid: string, @Res() res: Response) {
+  async findAllByRoom(
+    @Param('rid') rid: string,
+    @Query('page') page: number,
+    @Query('size') size: number,
+    @Res() res: Response,
+  ) {
     try {
-      const comments = await this.commentService.findAllByRoom(rid);
+      const formatPage = page ? Number(page) : 1;
+      const formatSize = size ? Number(size) : 10;
+
+      const comments = await this.commentService.findAllByRoom(
+        rid,
+        formatPage,
+        formatSize,
+      );
       return res.status(HttpStatus.OK).json({
         message: 'Get all comment successfully',
-        data: { comments },
+        data: { ...comments },
       });
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
@@ -110,9 +131,9 @@ export class CommentController {
     status: HttpStatus.INTERNAL_SERVER_ERROR,
     description: 'Internal server error',
   })
-  async remove(@Param('cid') cid: string, @Res() res: Response) {
+  async remove(@Param('cid') cid: string, @Body() body, @Res() res: Response) {
     try {
-      await this.commentService.remove(cid);
+      await this.commentService.remove(cid, body.uid);
 
       return res.status(HttpStatus.OK).json({
         message: 'Remove comment successfully',

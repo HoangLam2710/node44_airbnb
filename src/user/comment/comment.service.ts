@@ -36,12 +36,17 @@ export class CommentService {
     }
   }
 
-  async findAllByRoom(rid: string) {
+  async findAllByRoom(rid: string, page: number, size: number) {
     try {
       const comments = await this.prisma.comments.findMany({
         where: { rid },
+        skip: (page - 1) * size,
+        take: size,
       });
-      return comments;
+      const countComment = await this.prisma.comments.count({
+        where: { rid },
+      });
+      return { comments, total: countComment };
     } catch (error) {
       throw new Error(error);
     }
@@ -49,14 +54,14 @@ export class CommentService {
 
   async update(cid: string, body: UpdateCommentDto) {
     try {
+      const { uid, content, rate } = body;
+
       const checkComment = await this.prisma.comments.findUnique({
-        where: { cid },
+        where: { cid, uid },
       });
       if (!checkComment) {
         throw new BadRequestException('Comment not found');
       }
-
-      const { content, rate } = body;
 
       const updateComment = await this.prisma.comments.update({
         where: { cid },
@@ -71,10 +76,10 @@ export class CommentService {
     }
   }
 
-  async remove(cid: string) {
+  async remove(cid: string, uid: string) {
     try {
       const checkComment = await this.prisma.comments.findUnique({
-        where: { cid },
+        where: { cid, uid },
       });
       if (!checkComment) {
         throw new BadRequestException('Comment not found');
