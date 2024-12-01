@@ -1,6 +1,6 @@
-import { Controller, Get, HttpStatus, Param, Res } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Query, Res } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
 @ApiTags('Admin Comment')
@@ -10,6 +10,8 @@ export class CommentController {
 
   @ApiBearerAuth()
   @Get('/')
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'size', required: false, type: Number })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Get all comment successfully',
@@ -18,12 +20,22 @@ export class CommentController {
     status: HttpStatus.INTERNAL_SERVER_ERROR,
     description: 'Internal server error',
   })
-  async findAll(@Res() res: Response) {
+  async findAll(
+    @Query('page') page: number,
+    @Query('size') size: number,
+    @Res() res: Response,
+  ) {
     try {
-      const comments = await this.commentService.findAll();
+      const formatPage = page ? Number(page) : 1;
+      const formatSize = size ? Number(size) : 10;
+
+      const comments = await this.commentService.findAll(
+        formatPage,
+        formatSize,
+      );
       return res.status(HttpStatus.OK).json({
         message: 'Get all comment successfully',
-        data: { comments },
+        data: { ...comments },
       });
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
