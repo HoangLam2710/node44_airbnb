@@ -19,14 +19,44 @@ export class ReservationService {
         throw new BadRequestException('Room not found');
       }
 
+      if (checkinAt > checkoutAt) {
+        throw new BadRequestException(
+          'Checkin date must be less than checkout date',
+        );
+      }
+
+      if (checkinAt < new Date()) {
+        throw new BadRequestException(
+          'Checkin date must be greater than current date',
+        );
+      }
+
+      if (checkoutAt < new Date()) {
+        throw new BadRequestException(
+          'Checkout date must be greater than current date',
+        );
+      }
+
+      if (checkinAt === checkoutAt) {
+        throw new BadRequestException(
+          'Checkin date must be different from checkout date',
+        );
+      }
+
+      if (noCustomer < 1) {
+        throw new BadRequestException(
+          'Number of customer must be greater than 0',
+        );
+      }
+
       const newReservation = await this.prisma.reservation.create({
         data: {
           reid: uuidv4(),
           uid,
           rid,
           no_customer: noCustomer,
-          checkin_at: checkinAt,
-          checkout_at: checkoutAt,
+          checkin_at: new Date(checkinAt.toString().split('T')[0]),
+          checkout_at: new Date(checkoutAt.toString().split('T')[0]),
         },
       });
       return newReservation;
@@ -46,10 +76,10 @@ export class ReservationService {
     }
   }
 
-  async findOne(reid: string) {
+  async findOne(reid: string, uid: string) {
     try {
       const checkReservation = await this.prisma.reservation.findUnique({
-        where: { reid },
+        where: { reid, uid },
       });
       if (!checkReservation) {
         throw new BadRequestException('Reservation not found');
@@ -63,14 +93,14 @@ export class ReservationService {
 
   async update(reid: string, body: CreateReservationDto) {
     try {
+      const { uid, rid, checkinAt, checkoutAt, noCustomer } = body;
+
       const checkReservation = await this.prisma.reservation.findUnique({
-        where: { reid },
+        where: { reid, uid },
       });
       if (!checkReservation) {
         throw new BadRequestException('Reservation not found');
       }
-
-      const { rid, checkinAt, checkoutAt, noCustomer } = body;
 
       const checkRoom = await this.prisma.rooms.findUnique({
         where: { rid, status: 'active' },
@@ -79,13 +109,43 @@ export class ReservationService {
         throw new BadRequestException('Room not found');
       }
 
+      if (checkinAt > checkoutAt) {
+        throw new BadRequestException(
+          'Checkin date must be less than checkout date',
+        );
+      }
+
+      if (checkinAt < new Date()) {
+        throw new BadRequestException(
+          'Checkin date must be greater than current date',
+        );
+      }
+
+      if (checkoutAt < new Date()) {
+        throw new BadRequestException(
+          'Checkout date must be greater than current date',
+        );
+      }
+
+      if (checkinAt === checkoutAt) {
+        throw new BadRequestException(
+          'Checkin date must be different from checkout date',
+        );
+      }
+
+      if (noCustomer < 1) {
+        throw new BadRequestException(
+          'Number of customer must be greater than 0',
+        );
+      }
+
       const updateReservation = await this.prisma.reservation.update({
         where: { reid },
         data: {
           rid,
           no_customer: noCustomer,
-          checkin_at: checkinAt,
-          checkout_at: checkoutAt,
+          checkin_at: new Date(checkinAt.toString().split('T')[0]),
+          checkout_at: new Date(checkoutAt.toString().split('T')[0]),
         },
       });
       return updateReservation;
@@ -94,10 +154,10 @@ export class ReservationService {
     }
   }
 
-  async remove(reid: string) {
+  async remove(reid: string, uid: string) {
     try {
       const checkReservation = await this.prisma.reservation.findUnique({
-        where: { reid },
+        where: { reid, uid },
       });
       if (!checkReservation) {
         throw new BadRequestException('Reservation not found');

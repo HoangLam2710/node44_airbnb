@@ -79,9 +79,13 @@ export class ReservationController {
     status: HttpStatus.INTERNAL_SERVER_ERROR,
     description: 'Internal server error',
   })
-  async findOne(@Param('reid') reid: string, @Res() res: Response) {
+  async findOne(
+    @Param('reid') reid: string,
+    @Body() body,
+    @Res() res: Response,
+  ) {
     try {
-      const reservation = await this.reservationService.findOne(reid);
+      const reservation = await this.reservationService.findOne(reid, body.uid);
 
       return res.status(HttpStatus.OK).json({
         message: 'Get reservation detail successfully',
@@ -134,9 +138,13 @@ export class ReservationController {
     status: HttpStatus.INTERNAL_SERVER_ERROR,
     description: 'Internal server error',
   })
-  async remove(@Param('reid') reid: string, @Res() res: Response) {
+  async remove(
+    @Param('reid') reid: string,
+    @Body() body,
+    @Res() res: Response,
+  ) {
     try {
-      await this.reservationService.remove(reid);
+      await this.reservationService.remove(reid, body.uid);
 
       return res.status(HttpStatus.OK).json({
         message: 'Remove reservation successfully',
