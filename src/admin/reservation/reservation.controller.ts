@@ -1,6 +1,6 @@
-import { Controller, Get, HttpStatus, Param, Res } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Query, Res } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
 @ApiTags('Admin Reservation')
@@ -10,6 +10,8 @@ export class ReservationController {
 
   @ApiBearerAuth()
   @Get('/')
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'size', required: false, type: Number })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Get all reservation successfully',
@@ -18,13 +20,23 @@ export class ReservationController {
     status: HttpStatus.INTERNAL_SERVER_ERROR,
     description: 'Internal server error',
   })
-  async findAll(@Res() res: Response) {
+  async findAll(
+    @Query('page') page: number,
+    @Query('size') size: number,
+    @Res() res: Response,
+  ) {
     try {
-      const reservations = await this.reservationService.findAll();
+      const formatPage = page ? Number(page) : 1;
+      const formatSize = size ? Number(size) : 10;
+
+      const reservations = await this.reservationService.findAll(
+        formatPage,
+        formatSize,
+      );
 
       return res.status(HttpStatus.OK).json({
         message: 'Get all reservation successfully',
-        data: { reservations },
+        data: { ...reservations },
       });
     } catch (error) {
       return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
