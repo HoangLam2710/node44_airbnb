@@ -82,8 +82,17 @@ CREATE TABLE comments(
 	FOREIGN KEY(rid) REFERENCES rooms(rid) ON DELETE CASCADE
 );
 
+CREATE TABLE code_forgot_password(
+	coid VARCHAR(36) PRIMARY KEY,
+	uid VARCHAR(36) NOT NULL,
+	code VARCHAR(6) NOT NULL,
+	expire_at DATETIME NOT NULL,
+	FOREIGN KEY(uid) REFERENCES users(uid) ON DELETE CASCADE
+);
+
 DROP TABLE comments
 DROP TABLE reservation
 DROP TABLE rooms
 DROP TABLE positions
+DROP TABLE code_forgot_password
 DROP TABLE users

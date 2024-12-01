@@ -1,0 +1,1612 @@
+{
+	"info": {
+		"_postman_id": "e817c49f-7544-42cf-ba64-971e5def7ac8",
+		"name": "Node44 Airbnb",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14044439"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Lam\",\n    \"email\": \"lamle1@gmail.com\",\n    \"password\": \"123456\",\n    \"phone\": \"0396323430\",\n    \"dob\": \"1996-10-27\",\n    \"gender\": \"male\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/admin/auth/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"pm.environment.set(\"access_token\", jsonData.data.accessToken);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"123456\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/admin/auth/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Extend token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"pm.environment.set(\"access_token\", jsonData.data.accessToken);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/auth/extend-token",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"auth",
+										"extend-token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Forgot password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"lam.le1461432@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/admin/auth/forgot-password",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"auth",
+										"forgot-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reset password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"code\": \"432152\",\n    \"email\": \"lam.le1461432@gmail.com\",\n    \"password\": \"123456\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/admin/auth/reset-password",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"auth",
+										"reset-password"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Find all user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/user",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/user/337166a4-ba77-4908-9239-6affae4ed38a",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"user",
+										"337166a4-ba77-4908-9239-6affae4ed38a"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Position",
+					"item": [
+						{
+							"name": "Upload image for create position",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "images",
+											"type": "file",
+											"src": [
+												"/Users/hoanglam/Desktop/work/image-test/2201_w030_n002_290b_p1_290.jpg",
+												"/Users/hoanglam/Desktop/work/image-test/1679538300989-54787022.png",
+												"/Users/hoanglam/Desktop/work/image-test/Harry.Potter.full.672166.jpg"
+											]
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/admin/position/upload-image",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"position",
+										"upload-image"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create position",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"dalat\",\n    \"provice\": \"lamdong\",\n    \"country\": \"vietnam\",\n    \"images\": [\n        \"http://res.cloudinary.com/dhjgfdsf9/image/upload/v1732719047/positions/vmxbvwr1hhpep0aeyo8a.jpg\",\n        \"http://res.cloudinary.com/dhjgfdsf9/image/upload/v1732719045/positions/af6ezyv3eiz7xqeq1tet.png\",\n        \"http://res.cloudinary.com/dhjgfdsf9/image/upload/v1732719046/positions/drhr8g29inycs77ji1mr.jpg\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/admin/position",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"position"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find all position",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/position?page=1&size=10",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"position"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "lat",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find position detail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/position/01b5f4c7-e12c-418c-a81c-022bbdecc86a",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"position",
+										"01b5f4c7-e12c-418c-a81c-022bbdecc86a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update position",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"tokyo\",\n    \"provice\": \"osaka\",\n    \"country\": \"japan\",\n    \"images\": [\n        \"http://res.cloudinary.com/dhjgfdsf9/image/upload/v1732719047/positions/vmxbvwr1hhpep0aeyo8a.jpg\",\n        \"http://res.cloudinary.com/dhjgfdsf9/image/upload/v1732719045/positions/af6ezyv3eiz7xqeq1tet.png\",\n        \"http://res.cloudinary.com/dhjgfdsf9/image/upload/v1732719046/positions/drhr8g29inycs77ji1mr.jpg\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/admin/position/01b5f4c7-e12c-418c-a81c-022bbdecc86a",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"position",
+										"01b5f4c7-e12c-418c-a81c-022bbdecc86a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove position",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/position/01b5f4c7-e12c-418c-a81c-022bbdecc86a",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"position",
+										"01b5f4c7-e12c-418c-a81c-022bbdecc86a"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Room",
+					"item": [
+						{
+							"name": "Upload image for create room",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "images",
+											"type": "file",
+											"src": [
+												"/Users/hoanglam/Desktop/work/image-test/Harry.Potter.full.672166.jpg",
+												"/Users/hoanglam/Desktop/work/image-test/offset_comp_772626-opt.jpeg"
+											]
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/admin/room/upload-image",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"room",
+										"upload-image"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create room",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pid\": \"8d75ec07-1d09-40cb-a646-afedcf7925de\",\n    \"name\": \"test\",\n    \"noCustomer\": 2,\n    \"noBedroom\": 1,\n    \"noBed\": 1,\n    \"noBathroom\": 1,\n    \"price\": 5000000,\n    \"description\": \"luxury room\",\n    \"isWashingMachine\": true,\n    \"isIron\": true,\n    \"isTelevision\": true,\n    \"isAirConditioner\": true,\n    \"isWifi\": true,\n    \"isKitchen\": true,\n    \"isParking\": true,\n    \"isPool\": true,\n    \"images\": [\n        \"http://res.cloudinary.com/dhjgfdsf9/image/upload/v1732933988/rooms/ixltllocwlhflmce9hxo.jpg\",\n        \"http://res.cloudinary.com/dhjgfdsf9/image/upload/v1732933988/rooms/ytqzvym4cbm0gcawk1cz.jpg\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/admin/room",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"room"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find all room",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/room?page=1&size=10",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"room"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "deluxe",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find room by position",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/room/find-room-by-position/1a74f3b5-12a9-4ec1-900a-debb17d1e2b6",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"room",
+										"find-room-by-position",
+										"1a74f3b5-12a9-4ec1-900a-debb17d1e2b6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find room detail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/room/90210f7a-7c17-43fa-84a0-df78a03ead04",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"room",
+										"90210f7a-7c17-43fa-84a0-df78a03ead04"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update room",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"pid\": \"1a74f3b5-12a9-4ec1-900a-debb17d1e2b6\",\n    \"name\": \"standard edit\",\n    \"noCustomer\": 2,\n    \"noBedroom\": 1,\n    \"noBed\": 1,\n    \"noBathroom\": 1,\n    \"price\": 1000000,\n    \"description\": \"standard room\",\n    \"isWashingMachine\": true,\n    \"isIron\": true,\n    \"isTelevision\": true,\n    \"isAirConditioner\": true,\n    \"isWifi\": true,\n    \"isKitchen\": true,\n    \"isParking\": true,\n    \"isPool\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/admin/room/90210f7a-7c17-43fa-84a0-df78a03ead04",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"room",
+										"90210f7a-7c17-43fa-84a0-df78a03ead04"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove room",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/room/46dfede8-1ebd-4b43-af30-f7bf7df45f75",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"room",
+										"46dfede8-1ebd-4b43-af30-f7bf7df45f75"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Reservation",
+					"item": [
+						{
+							"name": "Find all reservation",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/reservation?page=1&size=",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"reservation"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find reservation detail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/reservation/7d605406-02c2-4734-8843-20e5de64dd72",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"reservation",
+										"7d605406-02c2-4734-8843-20e5de64dd72"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Comment",
+					"item": [
+						{
+							"name": "Find all comment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/comment?page=1&size=5",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"comment"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find comment detail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/admin/comment/20a5215c-6ff9-40b3-a7e8-9d57e0c555dc",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"comment",
+										"20a5215c-6ff9-40b3-a7e8-9d57e0c555dc"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"user\",\n    \"email\": \"user-postman1@gmail.com\",\n    \"password\": \"123456\",\n    \"phone\": \"0396323430\",\n    \"dob\": \"1996-10-27\",\n    \"gender\": \"male\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/auth/register",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"pm.environment.set(\"access_token_user\", jsonData.data.accessToken);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"user-postman@gmail.com\",\n    \"password\": \"123456\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/auth/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Extend token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = pm.response.json();",
+											"pm.environment.set(\"access_token_user\", jsonData.data.accessToken);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/user/auth/extend-token",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"auth",
+										"extend-token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Forgot password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"lam.hoang1432@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/auth/forgot-password",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"auth",
+										"forgot-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reset password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"code\": \"478644\",\n    \"email\": \"lam.hoang1432@gmail.com\",\n    \"password\": \"123456\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/admin/auth/reset-password",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"admin",
+										"auth",
+										"reset-password"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Find user detail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/user",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"user postman\",\n    \"phone\": \"0396323430\",\n    \"dob\": \"1996-10-28\",\n    \"gender\": \"male\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Position",
+					"item": [
+						{
+							"name": "Find all position",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/user/position?page=1&size=10&keyword",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"position"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find position detail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/user/position/1a74f3b5-12a9-4ec1-900a-debb17d1e2b6",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"position",
+										"1a74f3b5-12a9-4ec1-900a-debb17d1e2b6"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Room",
+					"item": [
+						{
+							"name": "Find all room",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/user/room?page=1&size=10",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"room"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										},
+										{
+											"key": "keyword",
+											"value": "deluxe",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find room by position",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/user/room/find-room-by-position/1a74f3b5-12a9-4ec1-900a-debb17d1e2b6",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"room",
+										"find-room-by-position",
+										"1a74f3b5-12a9-4ec1-900a-debb17d1e2b6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find room detail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/user/room/90210f7a-7c17-43fa-84a0-df78a03ead04",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"room",
+										"90210f7a-7c17-43fa-84a0-df78a03ead04"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Reservation",
+					"item": [
+						{
+							"name": "Create reservation",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"rid\": \"90210f7a-7c17-43fa-84a0-df78a03ead04\",\n    \"checkinAt\": \"2024-12-03\",\n    \"checkoutAt\": \"2024-12-04\",\n    \"noCustomer\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/reservation",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"reservation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find all reservation",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/user/reservation?page=1&size=2",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"reservation"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find reservation detail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/user/reservation/7d605406-02c2-4734-8843-20e5de64dd72",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"reservation",
+										"7d605406-02c2-4734-8843-20e5de64dd72"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update reservation",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"rid\": \"90210f7a-7c17-43fa-84a0-df78a03ead04\",\n    \"checkinAt\": \"2024-12-01\",\n    \"checkoutAt\": \"2024-12-03\",\n    \"noCustomer\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/reservation/7d605406-02c2-4734-8843-20e5de64dd72",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"reservation",
+										"7d605406-02c2-4734-8843-20e5de64dd72"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove reservation",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/user/reservation/7d605406-02c2-4734-8843-20e5de64dd72",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"reservation",
+										"7d605406-02c2-4734-8843-20e5de64dd72"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Comment",
+					"item": [
+						{
+							"name": "Create comment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"rid\": \"5056a63d-04e0-4994-838e-9bc1adc6d8b2\",\n    \"content\": \"test\",\n    \"rate\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/comment",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"comment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Find all comment by roomId",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/user/comment/90210f7a-7c17-43fa-84a0-df78a03ead04?page=1&size=5",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"comment",
+										"90210f7a-7c17-43fa-84a0-df78a03ead04"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "size",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update comment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\": \"test edit\",\n    \"rate\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/comment/0c0f74b0-2c99-4ba3-92e1-be3546061de9",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"comment",
+										"0c0f74b0-2c99-4ba3-92e1-be3546061de9"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove comment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{access_token_user}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/user/comment/0c0f74b0-2c99-4ba3-92e1-be3546061de9",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"comment",
+										"0c0f74b0-2c99-4ba3-92e1-be3546061de9"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

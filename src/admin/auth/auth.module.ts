@@ -7,9 +7,11 @@ import {
   JwtMiddlewareRefreshToken,
 } from 'src/strategy/jwt.strategy';
 import { SuperAdminPermissionMiddleware } from 'src/permission/super-admin.permission';
+import { EmailModule } from 'src/email/email.module';
+import { AdminPermissionMiddleware } from 'src/permission/admin.permission';
 
 @Module({
-  imports: [TokenModule],
+  imports: [TokenModule, EmailModule],
   controllers: [AuthController],
   providers: [AuthService],
 })
