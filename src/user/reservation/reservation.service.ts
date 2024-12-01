@@ -65,12 +65,17 @@ export class ReservationService {
     }
   }
 
-  async findAll(uid: string) {
+  async findAll(uid: string, page: number, size: number) {
     try {
       const reservations = await this.prisma.reservation.findMany({
         where: { uid },
+        skip: (page - 1) * size,
+        take: size,
       });
-      return reservations;
+      const countReservation = await this.prisma.reservation.count({
+        where: { uid },
+      });
+      return { reservations, total: countReservation };
     } catch (error) {
       throw new Error(error);
     }
