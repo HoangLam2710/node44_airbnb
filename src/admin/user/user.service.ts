@@ -39,6 +39,10 @@ export class UserService {
         throw new BadRequestException('User not found');
       }
 
+      if (checkUser.role !== 3) {
+        throw new BadRequestException('User is not a customer');
+      }
+
       await this.prisma.users.delete({
         where: { uid },
       });
